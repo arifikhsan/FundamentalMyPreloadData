@@ -58,17 +58,35 @@ class DataManagerService : Service(), CoroutineScope {
             var isInsertSuccess: Boolean
 
             try {
-                for (model in studentModels) {
-                    studentHelper.insert(model)
-                    progress += progressDiff
-                    publishProgress(progress.toInt())
+                studentHelper.beginTransaction()
+                loop@ for (model in studentModels) {
+                    when {
+                        job.isCancelled -> break@loop
+                        else -> {
+                            studentHelper.insertTransaction(model)
+                            progress += progressDiff
+                            publishProgress(progress.toInt())
+                        }
+                    }
                 }
 
-                isInsertSuccess = true
-                appPreference.firstRun = false
+                when {
+                    job.isCancelled -> {
+                        isInsertSuccess = false
+                        appPreference.firstRun = true
+                        sendMessage(CANCEL_MESSAGE)
+                    }
+                    else -> {
+                        studentHelper.setTransactionSuccess()
+                        isInsertSuccess = true
+                        appPreference.firstRun = false
+                    }
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "doInBackground: Exception")
                 isInsertSuccess = false
+            } finally {
+                studentHelper.endTransaction()
             }
 
             studentHelper.close()

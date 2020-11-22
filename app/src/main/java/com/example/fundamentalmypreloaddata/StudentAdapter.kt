@@ -23,7 +23,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentHolder>() {
         fun bind(student: StudentModel) {
             with(itemView) {
                 txt_nim.text = student.studentId
-                txt_nim.text = student.name
+                txt_name.text = student.name
             }
         }
     }
@@ -31,13 +31,13 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): StudentAdapter.StudentHolder {
+    ): StudentHolder {
         return StudentHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_student_row, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: StudentAdapter.StudentHolder, position: Int) {
+    override fun onBindViewHolder(holder: StudentHolder, position: Int) {
         holder.bind(students[position])
     }
 

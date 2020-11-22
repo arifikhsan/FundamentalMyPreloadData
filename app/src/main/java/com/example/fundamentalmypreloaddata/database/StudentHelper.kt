@@ -85,4 +85,25 @@ class StudentHelper(context: Context) {
         cursor.close()
         return arrayList
     }
+
+    fun beginTransaction() {
+        database.beginTransaction()
+    }
+
+    fun setTransactionSuccess() {
+        database.setTransactionSuccessful()
+    }
+
+    fun endTransaction() {
+        database.endTransaction()
+    }
+
+    fun insertTransaction(studentModel: StudentModel) {
+        val sql = ("INSERT INTO $TABLE_NAME ($NAME, $STUDENT_ID) VALUES (?, ?)")
+        val statement = database.compileStatement(sql)
+        statement.bindString(1, studentModel.name)
+        statement.bindString(2, studentModel.studentId)
+        statement.execute()
+        statement.clearBindings()
+    }
 }
