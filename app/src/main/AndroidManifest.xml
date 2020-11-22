@@ -11,6 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FundamentalMyPreloadData"
         tools:ignore="AllowBackup">
+
+        <service
+            android:name=".service.DataManagerService"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="ExportedService" />
+
+        <activity android:name=".StudentActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
