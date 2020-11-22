@@ -5,7 +5,7 @@ plugins {
 }
 
 androidExtensions {
-    experimental: true
+    experimental = true
 }
 
 android {
